@@ -15,11 +15,7 @@ The Dataset contains 17 columns and 1000 rows.
 COLUMN DESCRIPTION:
 Check Image Table for description of columns.
 
-DATA ANALYSIS:
-
-APPROACH USED:
-
-QUESTIONS TO ANSWER:
+ANALYSIS QUESTIONS:
 SET 1:
 1) How many unique product lines does the data have?
 2) What product category is the best seller defined by largest revenue?
@@ -35,5 +31,21 @@ SET 3:
 2) In what time frame(months) was the COGS highest?
 3) Which method of payment is more oftenly used across the branches? 
 
+DATA ANALYSIS:
 
-FORMULAS AND CALCULATIONS:
+Data Pre-processing
+Upon Inspection of the dataset these are the results and the related actions to be taken:
+
+1) No NULL values exist in any columns of the Dataset for all records, so there is no need to drop any columns.
+   Further, we have added the NOT NULL Constraint to the column names to ensure no null values exist while creation of table in MySQL.
+
+2) The Purchase_date and Purchase_time column are not sorted due to which the records are listed randomly.
+   For this we will sort the records based on both the above columns(Date first then time) to ensure that records are consistent.
+
+3) We also move the Purchase_date, Purchase_time columns to after the Product_line column for better understandibility.
+
+FEATURE ENGINEERING:
+
+
+FORMULAS AND CALCULATIONS FOR EXPLORATORY DATA ANALYSIS:
+1)
