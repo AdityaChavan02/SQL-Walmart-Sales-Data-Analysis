@@ -39,7 +39,6 @@ GROUP BY Product_line
 ORDER BY Totalvalue DESC;
 
 -- What is the most common product line by gender?
-
 SELECT Product_line, SUM(CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END) AS MALE,
 		SUM(CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END) AS FEMALE
 FROM sales
@@ -60,11 +59,32 @@ FROM sales
 GROUP BY Branch, City, Customer
 ORDER BY Branch,City,Totalvalue DESC;
 
--- Does being a Member/Non-Member affect the rating given to the Purchase?
+-- Does being a Member/Non-Member affect the rating given to the Purchase across different branches?
+SELECT Branch, City,Customer, AVG(Rating) AS AVG_Rating
+FROM sales
+GROUP BY Branch, City, Customer
+ORDER BY Branch,City,Customer DESC;
 
 -- What is the ratio of Member/Non-Member for each branch?
+SELECT Branch, City, Customer, COUNT(*) AS COUNT, 
+		COUNT(*)/SUM(COUNT(*)) OVER (PARTITION BY Branch) AS Ratio
+FROM sales
+GROUP BY Branch,City,Customer
+ORDER BY Branch,Customer;
 
 -- In what time frame(months) was the COGS highest?
+SELECT 
+	EXTRACT(YEAR_MONTH FROM Purchase_date) AS YearMonth,
+	SUM(COGS) AS TotalCOGS
+FROM sales
+GROUP BY YearMonth
+ORDER BY TotalCOGS DESC
+LIMIT 1;
 
 -- Which method of payment is more oftenly used across the branches?
-
+SELECT Branch, City, SUM(CASE WHEN Payment_type = 'Credit card' THEN 1 ELSE 0 END) AS CREDIT_CARD,
+		SUM(CASE WHEN Payment_type = 'Ewallet' THEN 1 ELSE 0 END) AS EWALLET,
+        SUM(CASE WHEN Payment_type = 'Cash' THEN 1 ELSE 0 END) AS CASH
+FROM sales
+GROUP BY Branch, City
+ORDER BY CREDIT_CARD DESC, EWALLET DESC, CASH DESC;
