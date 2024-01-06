@@ -24,19 +24,41 @@ CREATE TABLE IF NOT EXISTS Sales(
     Rating FLOAT NOT NULL
 );
 
-DROP TABLE sales;
 SELECT *
 FROM Sales;
 
 -- How many unique product lines does the data have?
+SELECT DISTINCT Product_line, COUNT(Product_line)
+FROM sales
+GROUP BY Product_line;
 
--- What product category is the best seller defined by largest  revenue?
+-- What product line is the best seller defined by largest revenue(indicated by total value)?
+SELECT Product_line, SUM(Total_value) AS Totalvalue
+FROM sales
+GROUP BY Product_line
+ORDER BY Totalvalue DESC;
 
 -- What is the most common product line by gender?
 
--- What was the most common method of payment across different product lines?
+SELECT Product_line, SUM(CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END) AS MALE,
+		SUM(CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END) AS FEMALE
+FROM sales
+GROUP BY Product_line
+ORDER BY MALE DESC, FEMALE DESC,Product_line;
 
--- Which customer type brings the most revenue?
+-- What was the most common method of payment across different product lines?
+SELECT Product_line, SUM(CASE WHEN Payment_type = 'Credit card' THEN 1 ELSE 0 END) AS CREDIT_CARD,
+		SUM(CASE WHEN Payment_type = 'Ewallet' THEN 1 ELSE 0 END) AS EWALLET,
+        SUM(CASE WHEN Payment_type = 'Cash' THEN 1 ELSE 0 END) AS CASH
+FROM sales
+GROUP BY Product_line
+ORDER BY CREDIT_CARD DESC, EWALLET DESC, CASH DESC;
+	
+-- Which customer type brings the most revenue across the three branches?
+SELECT Branch,City,Customer, SUM(Total_value) AS Totalvalue
+FROM sales
+GROUP BY Branch, City, Customer
+ORDER BY Branch,City,Totalvalue DESC;
 
 -- Does being a Member/Non-Member affect the rating given to the Purchase?
 
